@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+{% block main %}
+    {% if error_msg %}
+        <p>{{ error_msg }}</p>
+    {% endif %}
+
+    {% for post in post_list %}
+        
+        </article>
+        
+         <div class="w3-card-4 w3-margin w3-white">
+            <img src="{{ post.image_title }}"alt="Norway" style="width:100%">
+            <div class="w3-container">
+                <h3><b>{{ post.title }}</b></h3>
+                <h5>Title description, <span class="w3-opacity">{{post.created_time}}</span></h5>
+        </div>
+
+    <div class="w3-container">
+      <p>{{ post.excerpt }}...</p>
+      <div class="w3-row">
+        <div class="w3-col m8 s12">
+          <p><a class="w3-button w3-padding-large w3-white w3-border" href="{{ post.get_absolute_url }}"> READ MORE </a>
+          
+         </p>
+        </div>
+        <div class="w3-col m4 w3-hide-small">
+          <p><span class="w3-padding-large w3-right"><b>Comments  </b> <span class="w3-badge">{{ post.comment_set.count }}</span></span></p>
+        </div>
+      </div>
+    </div>
+  </div>
+         
+    {% empty %}
+        <div class="no-post">Chưa có bài viết nào</div>
+    {% endfor %}
+
+
+        <div class="pagination">
+            <ul>
+                {% if not is_paginated %}
+                    <a href="?page=1">Trang đầu</a>
+                    <a href="?page=1" style="color: red">1</a>
+                    <a href="?page=1">Trang cuối</a>
+                {% endif %}
+                {% if is_paginated %}
+                    <a href="?page=1">trang đầu</a>
+                    {% if page_obj.has_previous %}
+                        <a href="?page={{ page_obj.previous_page_number }}">上一页</a>
+                    {% endif %}
+                    {% if first %}
+                        <li><a href="?page=1">1</a></li>
+                    {% endif %}
+                    {% if left %}
+                        {% if left_has_more %}
+                            <li><span>...</span></li>
+                        {% endif %}
+                        {% for i in left %}
+                            <li><a href="?page={{ i }}">{{ i }}</a></li>
+                        {% endfor %}
+                    {% endif %}
+                    <li class="current"><a href="?page={{ page_obj.number }}" style="color: red">{{ page_obj.number }}</a></li>
+                    {% if right %}
+                        {% for i in right %}
+                            <li><a href="?page={{ i }}">{{ i }}</a></li>
+                        {% endfor %}
+                        {% if right_has_more %}
+                            <li><span>...</span></li>
+                        {% endif %}
+                    {% endif %}
+                    {% if last %}
+                        <li><a href="?page={{ paginator.num_pages }}">{{ paginator.num_pages }}</a></li>
+                    {% endif %}
+                    {% if page_obj.has_next %}
+                        <a href="?page={{ page_obj.next_page_number }}">trang tiếp theo</a>
+                    {% endif %}
+                    <a href="?page={{ paginator.num_pages }}">trang cuối</a>
+                {% endif %}
+            </ul>
+        </div>
+{% endblock main %}
